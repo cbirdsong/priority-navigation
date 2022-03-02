@@ -29,10 +29,12 @@
 		initClass: "js-priorityNav", // Class that will be printed on html element to allow conditional css styling.
 		mainNavWrapper: "nav", // mainnav wrapper selector (must be direct parent from mainNav)
 		mainNav: "ul", // mainnav selector. (must be inline-block)
-		navDropdownClassName: "nav__dropdown", // class used for the dropdown.
-		navDropdownToggleClassName: "nav__dropdown-toggle", // class used for the dropdown toggle.
-		navDropdownLabel: "more", // Text that is used for the dropdown toggle.
-		navDropdownBreakpointLabel: "menu", //button label for navDropdownToggle when the breakPoint is reached.
+		navDropdownClassName: "", // additional class used for the dropdown.
+		navDropdownToggleClassName: "", // additional class used for the dropdown toggle.
+		navDropdownLabel: "More", // Text that is used for the dropdown toggle.
+		navDropdownIcon: "", // SVG for before the breakPoint is reached.
+		navDropdownBreakpointLabel: "Menu", //button label for navDropdownToggle when the breakPoint is reached.
+		navDropdownBreakpointIcon: "", //SVG for when the breakPoint is reached.
 		breakPoint: 500, //amount of pixels when all menu items should be moved to dropdown to simulate a mobile menu
 		throttleDelay: 50, // this will throttle the calculating logic on resize because i'm a responsible dev.
 		offsetPixels: 0, // increase to decrease the time it takes to move an item.
@@ -62,32 +64,6 @@
 				callback.call(scope, collection[i], i, collection);
 			}
 		}
-	};
-
-	/**
-	 * Get the closest matching element up the DOM tree
-	 * @param {Element} elem Starting element
-	 * @param {String} selector Selector to match against (class, ID, or data attribute)
-	 * @return {Boolean|Element} Returns false if not match found
-	 */
-	var getClosest = function (elem, selector) {
-		var firstChar = selector.charAt(0);
-		for (; elem && elem !== document; elem = elem.parentNode) {
-			if (firstChar === ".") {
-				if (elem.classList.contains(selector.substr(1))) {
-					return elem;
-				}
-			} else if (firstChar === "#") {
-				if (elem.id === selector.substr(1)) {
-					return elem;
-				}
-			} else if (firstChar === "[") {
-				if (elem.hasAttribute(selector.substr(1, selector.length - 2))) {
-					return elem;
-				}
-			}
-		}
-		return false;
 	};
 
 	/**
@@ -132,25 +108,6 @@
 	}
 
 	/**
-	 * Toggle class on element
-	 * @param el
-	 * @param className
-	 */
-	var toggleClass = function (el, className) {
-		if (el.classList) {
-			el.classList.toggle(className);
-		} else {
-			var classes = el.className.split(" ");
-			var existingIndex = classes.indexOf(className);
-
-			if (existingIndex >= 0) classes.splice(existingIndex, 1);
-			else classes.push(className);
-
-			el.className = classes.join(" ");
-		}
-	};
-
-	/**
 	 * Check if dropdown menu is already on page before creating it
 	 * @param mainNavWrapper
 	 */
@@ -167,7 +124,10 @@
 		 * Set label for dropdown toggle
 		 * @type {string}
 		 */
-		navDropdownToggle.innerHTML = settings.navDropdownLabel;
+
+		var navDropdownToggleContent =
+			'<span class="label">' + settings.navDropdownLabel + "</span>" + settings.navDropdownIcon;
+		navDropdownToggle.innerHTML = navDropdownToggleContent;
 
 		/**
 		 * Set aria attributes for accessibility
@@ -184,7 +144,11 @@
 			return;
 		}
 
+		// _this.insertAfter(toggleWrapper, _this.querySelector(mainNav));
 		_this.insertAfter(toggleWrapper, _this.querySelector(mainNav));
+		// toggleWrapper.appendChild(_this.querySelector(mainNav));
+
+		// _this.insertAfter(toggleWrapper, _this.querySelector(secondaryNav));
 
 		toggleWrapper.appendChild(navDropdownToggle);
 		toggleWrapper.appendChild(navDropdown);
@@ -299,7 +263,8 @@
 				//recalculate widths
 				calculateWidths(_this, identifier);
 				//update dropdownToggle label
-				if (viewportWidth < settings.breakPoint) updateLabel(_this, identifier, settings.navDropdownBreakpointLabel);
+				if (viewportWidth < settings.breakPoint)
+					updateLabel(_this, identifier, settings.navDropdownBreakpointLabel, settings.navDropdownBreakpointIcon);
 			}
 
 			/**
@@ -309,7 +274,8 @@
 				//move item to menu
 				priorityNav.toMenu(_this, identifier);
 				//update dropdownToggle label
-				if (viewportWidth > settings.breakPoint) updateLabel(_this, identifier, settings.navDropdownLabel);
+				if (viewportWidth > settings.breakPoint)
+					updateLabel(_this, identifier, settings.navDropdownLabel, settings.navDropdownIcon);
 			}
 
 			/**
@@ -318,7 +284,7 @@
 			if (breaks[identifier].length < 1) {
 				_this.querySelector(navDropdown).classList.remove("show");
 				//show navDropdownLabel
-				updateLabel(_this, identifier, settings.navDropdownLabel);
+				updateLabel(_this, identifier, settings.navDropdownLabel, settings.navDropdownIcon);
 			}
 
 			/**
@@ -327,9 +293,13 @@
 			if (_this.querySelector(mainNav).children.length < 1) {
 				//show navDropdownBreakpointLabel
 				_this.classList.add("is-empty");
-				updateLabel(_this, identifier, settings.navDropdownBreakpointLabel);
+				_this.querySelector(navDropdown).classList.add("is-full");
+				_this.querySelector(navDropdownToggle).classList.add("is-full");
+				updateLabel(_this, identifier, settings.navDropdownBreakpointLabel, settings.navDropdownBreakpointIcon);
 			} else {
 				_this.classList.remove("is-empty");
+				_this.querySelector(navDropdown).classList.remove("is-full");
+				_this.querySelector(navDropdownToggle).classList.remove("is-full");
 			}
 
 			/**
@@ -371,8 +341,10 @@
 		_this.querySelector(navDropdownToggle).setAttribute("priorityNav-count", breaks[identifier].length);
 	};
 
-	var updateLabel = function (_this, identifier, label) {
-		_this.querySelector(navDropdownToggle).innerHTML = label;
+	var updateLabel = function (_this, identifier, label, icon) {
+		_this.querySelector(navDropdownToggle).setAttribute("aria-label", label);
+		// _this.querySelector(navDropdownToggle).innerHTML = label;
+		_this.querySelector(navDropdownToggle).innerHTML = "<span class='label'>" + label + "</span>" + icon;
 	};
 
 	/**
@@ -484,14 +456,13 @@
 
 		// Toggle dropdown
 		_this.querySelector(navDropdownToggle).addEventListener("click", function () {
-			toggleClass(_this.querySelector(navDropdown), "show");
-			toggleClass(this, "is-open");
-			toggleClass(_this, "is-open");
+			this.classList.toggle("is-open");
+			_this.querySelector(navDropdown).classList.toggle("show");
 
 			/**
 			 * Toggle aria hidden for accessibility
 			 */
-			if (-1 !== _this.className.indexOf("is-open")) {
+			if (_this.querySelector(navDropdown).getAttribute("aria-hidden") == true) {
 				_this.querySelector(navDropdown).setAttribute("aria-hidden", "false");
 			} else {
 				_this.querySelector(navDropdown).setAttribute("aria-hidden", "true");
@@ -503,10 +474,7 @@
 		 * Remove when clicked outside dropdown
 		 */
 		document.addEventListener("click", function (event) {
-			if (
-				!getClosest(event.target, "." + settings.navDropdownClassName) &&
-				event.target !== _this.querySelector(navDropdownToggle)
-			) {
+			if (!event.target.closest(".priority-nav__wrapper")) {
 				_this.querySelector(navDropdown).classList.remove("show");
 				_this.querySelector(navDropdownToggle).classList.remove("is-open");
 				_this.classList.remove("is-open");
@@ -521,7 +489,7 @@
 			if (evt.keyCode === 27) {
 				document.querySelector(navDropdown).classList.remove("show");
 				document.querySelector(navDropdownToggle).classList.remove("is-open");
-				mainNavWrapper.classList.remove("is-open");
+				_this.classList.remove("is-open");
 			}
 		};
 	};

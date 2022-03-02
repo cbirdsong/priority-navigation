@@ -6,6 +6,10 @@
  * http://twitter.com/GijsRoge
  */
 
+.priority-nav__wrapper {
+	position: relative;
+}
+
 .priority-nav {
 	white-space: nowrap; // prevent flash of unstyled content
 
@@ -15,37 +19,34 @@
     */
 	> ul {
 		display: inline-block;
+
 		> li {
 			display: inline-block;
 		}
 	}
-	&-has-dropdown {
-		.priority-nav {
-			&__dropdown {
-				&-toggle {
-					position: relative;
-				}
-			}
-		}
-	}
-	&__wrapper {
+}
+
+.priority-nav__dropdown-toggle {
+	visibility: hidden;
+	position: absolute;
+
+	.priority-nav-has-dropdown & {
 		position: relative;
 	}
-	&__dropdown {
-		position: absolute;
-		visibility: hidden;
-		&.show {
-			visibility: visible;
-		}
-		&-toggle {
-			visibility: hidden;
-			position: absolute;
-		}
-	}
-	&-is-visible {
+}
+
+.priority-nav__dropdown {
+	position: absolute;
+	visibility: hidden;
+
+	&.show {
 		visibility: visible;
 	}
-	&-is-hidden {
-		visibility: hidden;
-	}
+}
+
+.priority-nav-is-visible {
+	visibility: visible;
+}
+.priority-nav-is-hidden {
+	visibility: hidden;
 }
