@@ -73,7 +73,7 @@ module.exports = function (grunt) {
 				commitMessage: "released v%VERSION%",
 				commitFiles: ["package.json", "dist"],
 				createTag: false,
-				push: false,
+				push: true,
 				pushTo: "origin master",
 			},
 		},
