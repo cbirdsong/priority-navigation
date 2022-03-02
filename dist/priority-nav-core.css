@@ -5,6 +5,10 @@
  * Free to use under the MIT License.
  * http://twitter.com/GijsRoge
  */
+.priority-nav__wrapper {
+  position: relative;
+}
+
 .priority-nav {
   white-space: nowrap;
   /*
@@ -21,11 +25,12 @@
   display: inline-block;
 }
 
-.priority-nav-has-dropdown .priority-nav__dropdown-toggle {
-  position: relative;
+.priority-nav__dropdown-toggle {
+  visibility: hidden;
+  position: absolute;
 }
 
-.priority-nav__wrapper {
+.priority-nav-has-dropdown .priority-nav__dropdown-toggle {
   position: relative;
 }
 
@@ -36,11 +41,6 @@
 
 .priority-nav__dropdown.show {
   visibility: visible;
-}
-
-.priority-nav__dropdown-toggle {
-  visibility: hidden;
-  position: absolute;
 }
 
 .priority-nav-is-visible {

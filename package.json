@@ -1,7 +1,7 @@
 {
   "name": "priority-nav",
   "title": "priority-nav",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "dist/priority-nav.js",
   "description": "Priority+ pattern navigation that hides menu items if they don't fit on screen.",
   "homepage": "http://gijsroge.github.io/priority-nav.js/",
@@ -18,10 +18,7 @@
     "responsive",
     "navigation"
   ],
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/gijsroge/priority-navigation/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/gijsroge/priority-navigation/issues"
   },
@@ -34,13 +31,12 @@
     "grunt": "1.0.2",
     "grunt-bump": "0.8.0",
     "grunt-contrib-concat": "1.0.1",
-    "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-uglify": "3.3.0",
     "grunt-contrib-watch": "1.0.1",
-    "jshint-stylish": "2.2.1",
     "grunt-sass": "2.1.0"
   },
   "scripts": {
-    "test": "grunt jshint"
+    "build": "grunt build",
+    "release": "grunt release"
   }
 }
