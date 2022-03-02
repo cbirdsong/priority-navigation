@@ -1,12 +1,13 @@
 # PriorityNavigation.js
 
-PriorityNav is a pure javascript plugin that will move your menu items if they don't fit its parent. Forked from [https://github.com/gijsroge/priority-navigation](https://github.com/gijsroge/priority-navigation) by [GijsRoge](http://twitter.com/GijsRoge).
+PriorityNav is a pure javascript plugin that will move your menu items if they don't fit its parent. Forked from [gijsroge/priority-navigation](https://github.com/gijsroge/priority-navigation) by [GijsRoge](http://twitter.com/GijsRoge).
 
 ### Features
 
 - **Accessible**<br>Adds appropriate aria attributes and set focus to links when needed.
 - **No dependencies**<br>The plugin is written in pure javascript making it fast and lean.
-- **Breakpoint**<br>When the breakpoint has been reached the plugin will automaticly move all items to the dropdown & change the toggle label to navDropdownBreakpointLabel.
+- **Icons**<br>Adds SVG icons if supplied.
+- **Breakpoint**<br>When the breakpoint has been reached the plugin will automaticly move all items to the dropdown, change the toggle label to navDropdownBreakpointLabel and change the icon to navDropdownBreakpointIcon.
 - **Smart calculation of available space**<br>It automatically looks for the main navigation's siblings and calculates remaining space.
 - **Flexible**<br>Because of the point above you can have multiple inline-block/flexbox items on the same level.
 - **Non obstructive menu dropdown**<br>The dropdown menu can be closed by clicking outside and pressing escape.
@@ -56,9 +57,9 @@ mainNav:                    "ul", // mainnav selector. (must be inline-block)
 navDropdownClassName:       "", // class used for the dropdown - this is a class name, not a selector.
 navDropdownToggleClassName: "", // class used for the dropdown toggle - this is a class name, not a selector.
 navDropdownLabel:           "More", // Text that is used for the dropdown toggle.
-navDropdownIcon:            "", // SVG for the dropdown toggle before the breakPoint is reached.
+navDropdownIcon:            "", // SVG for the dropdown toggle before the breakPoint is reached. Ex: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>'
 navDropdownBreakpointLabel: "Menu", //button label for navDropdownToggle when the breakPoint is reached.
-navDropdownBreakpointIcon: "Menu", //SVG for navDropdownToggle when the breakPoint is reached.
+navDropdownBreakpointIcon: "", //SVG for navDropdownToggle when the breakPoint is reached. Ex: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>'
 breakPoint:                 500, //amount of pixels when all menu items should be moved to dropdown to simulate a mobile menu
 throttleDelay:              50, // this will throttle the calculating logic on resize because i'm a responsible dev.
 offsetPixels:               0, // increase to decrease the time it takes to move an item.
